@@ -4,10 +4,13 @@ source "https://rubygems.org"
 gemspec
 
 group :development do
-  gem 'resque', '~>1.24.1'
+  gem 'mongo-resque', :require => 'resque'
 end
 
 group :test do
   gem 'rspec'
-  gem 'mock_redis'
+  gem 'mongo'
+  #gem 'mock_redis'
+  #
+  #gem 'embedded-mongo', :git => 'https://github.com/gdb/embedded-mongo.git'
 end

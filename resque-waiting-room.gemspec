@@ -5,11 +5,10 @@ require "version"
 Gem::Specification.new do |s|
   s.name        = "resque-waiting-room"
   s.version     = Resque::Plugins::WaitingRoom::VERSION
-  s.authors     = ["Julien Blanchard"]
-  s.email       = ["julien@sideburns.eu"]
-  s.homepage    = "https://www.github.com/julienXX/resque-waiting-room"
-  s.summary     = %q{Put your Resque jobs in a waiting room}
-  s.description = %q{Throttle your Resque jobs}
+  s.authors     = ["Jeff Durand"]
+  s.email       = ["jeff@exoprise.com"]
+  s.summary     = %q{Put your Resque mongo jobs in a waiting room}
+  s.description = %q{Throttle your Resque mongo jobs}
 
   s.rubyforge_project = "resque-waiting-room"
 
@@ -20,5 +19,5 @@ Gem::Specification.new do |s|
   s.files         += Dir.glob("spec/**/*")
 
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'resque'
+  s.add_development_dependency 'mongo-resque'
 end
