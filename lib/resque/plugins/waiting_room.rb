@@ -39,7 +39,7 @@ module Resque
       def has_remaining_performs_key?(key)
         k = nil
         mongo_collection.find({mykey: key}).each do |obj|
-          if obj["expire_at"].to_i <= Time.now.to_i
+          if obj["expire_at"].to_i <= Time.now.to_i || obj["max_performs"].to_i <= 0
             mongo_collection.remove(obj) 
           else
             k = obj
