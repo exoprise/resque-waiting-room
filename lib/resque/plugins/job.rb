@@ -5,6 +5,8 @@ module Resque
 
       def reserve(queue)
         if queue =~ /^waiting_room/ && Resque.size(queue) > 0
+          query = {"expire_at" => {"$lte"=>Time.now.to_i}}
+          Resque.mongo["waitingroom_holding"].remove(query)
           payload = Resque.pop(queue)
           if payload
             klass = constantize(payload['class'])
