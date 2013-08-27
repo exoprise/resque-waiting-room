@@ -20,15 +20,12 @@ module Resque
 
       def before_perform_waiting_room(*args)
         key = waiting_room_redis_key
-
         if has_remaining_performs_key?(key)
           obj = mongo_collection.find_and_modify({
             "query" => {"mykey" => key},
             "update" => {"$inc" => {"max_performs" => -1}}
           })
-          #p obj
-          performs_left = obj["max_performs"].to_i #Resque.redis.decrby(key, 1).to_i
-          #p performs_left  
+          performs_left = obj ? obj.fetch("max_performs",0).to_i : 0 
           if performs_left <= 1
             Resque.push 'waiting_room', class: self.to_s, args: args
             raise Resque::Job::DontPerform
