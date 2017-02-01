@@ -21,10 +21,11 @@ module Resque
       def before_perform_waiting_room(*args)
         key = waiting_room_redis_key
         if has_remaining_performs_key?(key)
-          obj = mongo_collection.find_and_modify({
-            "query" => {"mykey" => key},
-            "update" => {"$inc" => {"max_performs" => -1}}
-          })
+          # obj = mongo_collection.find_and_modify({
+          #   "query" => {"mykey" => key},
+          #   "update" => {"$inc" => {"max_performs" => -1}}
+          # })
+          obj = mongo_collection.find_one_and_update({"mykey" => key}, {"$inc" => {"max_performs" => -1}})
           performs_left = obj ? obj.fetch("max_performs",0).to_i : 0 
           if performs_left <= 1
             Resque.push 'waiting_room', class: self.to_s, args: args
@@ -43,7 +44,8 @@ module Resque
             "max_performs" => @max_performs - 1,
             "expire_at" => Time.now.to_i + @period.to_i
           }
-          mongo_collection.insert(opts)
+          #mongo_collection.insert(opts)
+          mongo_collection.insert_one(opts)
           return false
         end
       end
