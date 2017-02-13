@@ -36,7 +36,8 @@ module Resque
 
       def has_remaining_performs_key?(key)
 
-        if mongo_collection.find_one({mykey: key})
+        #if mongo_collection.find_one({mykey: key})
+        if mongo_collection.find({mykey: key}, limit: 1).first
           return true
         else
           opts = {
